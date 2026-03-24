@@ -1,12 +1,13 @@
+import sys
+import os
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
 import pytest
 from unittest.mock import MagicMock
 from app import create_app
 from config import Config
 from domain.entities import WorkoutSession, ExerciseSet
-import sys
-import os
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 
 class TestConfig(Config):
