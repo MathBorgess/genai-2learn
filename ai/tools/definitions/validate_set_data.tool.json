@@ -1,0 +1,53 @@
+{
+  "type": "function",
+  "function": {
+    "name": "validate_set_data",
+    "description": "Validates exercise set data for completeness and physiological plausibility before effort estimation",
+    "parameters": {
+      "type": "object",
+      "required": ["exercise_id", "load_kg", "reps"],
+      "properties": {
+        "exercise_id": {
+          "type": "string",
+          "description": "Unique identifier for the exercise (e.g., 'squat', 'bench_press')"
+        },
+        "load_kg": {
+          "type": "number",
+          "description": "Load used in kilograms",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "reps": {
+          "type": "integer",
+          "description": "Number of repetitions completed",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "rir_reported": {
+          "type": "number",
+          "description": "Self-reported Reps in Reserve (0=failure, 10=very easy)",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "rpe_reported": {
+          "type": "number",
+          "description": "Self-reported Rate of Perceived Exertion (1-10 scale)",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "bpm_avg": {
+          "type": "number",
+          "description": "Average heart rate during the set",
+          "minimum": 30,
+          "maximum": 250
+        },
+        "bpm_peak": {
+          "type": "number",
+          "description": "Peak heart rate during the set",
+          "minimum": 30,
+          "maximum": 250
+        }
+      }
+    }
+  }
+}

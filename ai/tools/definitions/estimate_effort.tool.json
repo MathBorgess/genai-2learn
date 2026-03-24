@@ -1,0 +1,53 @@
+{
+  "type": "function",
+  "function": {
+    "name": "estimate_effort",
+    "description": "Estimates the effort level (0-100) for a completed exercise set and provides an estimated Reps in Reserve value",
+    "parameters": {
+      "type": "object",
+      "required": ["set_id", "exercise_id", "load_kg", "reps", "data_quality_score"],
+      "properties": {
+        "set_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID of the exercise set"
+        },
+        "exercise_id": {
+          "type": "string",
+          "description": "Exercise identifier"
+        },
+        "load_kg": {
+          "type": "number",
+          "description": "Load in kilograms"
+        },
+        "reps": {
+          "type": "integer",
+          "description": "Repetitions completed"
+        },
+        "rir_reported": {
+          "type": "number",
+          "description": "Optional: Self-reported RIR"
+        },
+        "rpe_reported": {
+          "type": "number",
+          "description": "Optional: Self-reported RPE"
+        },
+        "bpm_avg": {
+          "type": "number",
+          "description": "Optional: Average heart rate"
+        },
+        "data_quality_score": {
+          "type": "number",
+          "description": "Data quality score from validation (0-1)",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "expected_max_reps": {
+          "type": "integer",
+          "description": "Expected maximum reps for this exercise at this load (default: 12)",
+          "default": 12
+        }
+      }
+    }
+  }
+}

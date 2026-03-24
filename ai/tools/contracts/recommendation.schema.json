@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Recommendation",
+  "description": "Schema for load recommendation input and output",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "required": ["effort_score", "confidence", "rir_estimate"],
+      "properties": {
+        "effort_score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rir_estimate": { "type": "number", "minimum": 0 },
+        "pain_flag": { "type": "boolean", "default": false },
+        "current_load_kg": { "type": "number", "minimum": 0 }
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": ["action_type", "load_delta_pct", "rationale"],
+      "properties": {
+        "action_type": {
+          "type": "string",
+          "enum": ["INCREASE_LOAD", "DECREASE_LOAD", "MAINTAIN", "ADJUST_TECHNIQUE"]
+        },
+        "load_delta_pct": { "type": "number", "minimum": -50, "maximum": 25 },
+        "cue_list": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "safety_reason_codes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
