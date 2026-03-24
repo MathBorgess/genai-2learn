@@ -38,4 +38,5 @@ def create_app(config: type = Config) -> Flask:
 
 if __name__ == "__main__":
     application = create_app()
-    application.run(host="0.0.0.0", port=8000, debug=True)
+    debug = application.config.get("FLASK_ENV") == "development"
+    application.run(host="0.0.0.0", port=8000, debug=debug)
