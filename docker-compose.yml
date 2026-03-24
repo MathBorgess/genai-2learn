@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_DB: genai2learn
-      POSTGRES_USER: genai
-      POSTGRES_PASSWORD: genai_secret
+      POSTGRES_DB: ${POSTGRES_DB:-genai2learn}
+      POSTGRES_USER: ${POSTGRES_USER:-genai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-genai_secret}
     ports:
       - "5432:5432"
     volumes:
@@ -21,8 +21,8 @@ services:
   rabbitmq:
     image: rabbitmq:3.12-management-alpine
     environment:
-      RABBITMQ_DEFAULT_USER: genai
-      RABBITMQ_DEFAULT_PASS: genai_secret
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-genai}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-genai_secret}
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -42,7 +42,7 @@ services:
       - FLASK_ENV=development
       - WORKOUT_COMMAND_URL=http://workout-command:8001
       - EFFORT_INTELLIGENCE_URL=http://effort-intelligence:8002
-      - JWT_SECRET_KEY=dev-secret-key-change-in-prod
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-secret-key-change-in-prod}
     depends_on:
       postgres:
         condition: service_healthy

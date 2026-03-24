@@ -21,16 +21,16 @@ health:
 	@curl -s http://localhost:8002/health | python3 -m json.tool
 
 test:
-	cd services/api-gateway && python -m pytest tests/ -v --tb=short
-	cd services/workout-command && python -m pytest tests/ -v --tb=short
-	cd services/effort-intelligence && python -m pytest tests/ -v --tb=short
-	cd services/worker && python -m pytest tests/ -v --tb=short
+	cd services/api-gateway && python -m pytest tests/ -v --tb=short || exit 1
+	cd services/workout-command && python -m pytest tests/ -v --tb=short || exit 1
+	cd services/effort-intelligence && python -m pytest tests/ -v --tb=short || exit 1
+	cd services/worker && python -m pytest tests/ -v --tb=short || exit 1
 
 test-cov:
-	cd services/api-gateway && python -m pytest tests/ -v --cov=src --cov-report=term-missing
-	cd services/workout-command && python -m pytest tests/ -v --cov=src --cov-report=term-missing
-	cd services/effort-intelligence && python -m pytest tests/ -v --cov=src --cov-report=term-missing
-	cd services/worker && python -m pytest tests/ -v --cov=src --cov-report=term-missing
+	cd services/api-gateway && python -m pytest tests/ -v --cov=src --cov-report=term-missing || exit 1
+	cd services/workout-command && python -m pytest tests/ -v --cov=src --cov-report=term-missing || exit 1
+	cd services/effort-intelligence && python -m pytest tests/ -v --cov=src --cov-report=term-missing || exit 1
+	cd services/worker && python -m pytest tests/ -v --cov=src --cov-report=term-missing || exit 1
 
 clean:
 	docker-compose down -v --remove-orphans

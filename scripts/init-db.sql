@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS exercise_sets (
     session_id      UUID NOT NULL REFERENCES workout_sessions(id) ON DELETE CASCADE,
     exercise_id     VARCHAR(255) NOT NULL,
     load_kg         FLOAT NOT NULL CHECK (load_kg >= 0 AND load_kg <= 1000),
-    reps            INTEGER NOT NULL CHECK (reps >= 0 AND reps <= 100),
+    reps            INTEGER NOT NULL CHECK (reps >= 1 AND reps <= 100),
     rir_reported    FLOAT CHECK (rir_reported >= 0 AND rir_reported <= 10),
     rpe_reported    FLOAT CHECK (rpe_reported >= 0 AND rpe_reported <= 10),
     bpm_avg         FLOAT CHECK (bpm_avg >= 30 AND bpm_avg <= 250),
