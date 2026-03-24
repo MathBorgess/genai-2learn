@@ -1,0 +1,47 @@
+{
+  "type": "function",
+  "function": {
+    "name": "record_outcome",
+    "description": "Records the outcome of a recommendation (whether accepted, and the results) to enable future model improvement",
+    "parameters": {
+      "type": "object",
+      "required": ["recommendation_id", "set_id", "accepted"],
+      "properties": {
+        "recommendation_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID of the recommendation"
+        },
+        "set_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID of the resulting exercise set"
+        },
+        "accepted": {
+          "type": "boolean",
+          "description": "Whether the athlete accepted the recommendation"
+        },
+        "completed_reps": {
+          "type": "integer",
+          "description": "Number of reps completed in the resulting set",
+          "minimum": 0
+        },
+        "resulting_rir_reported": {
+          "type": "number",
+          "description": "Athlete's reported RIR after the resulting set",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "pain_flag": {
+          "type": "boolean",
+          "description": "Whether pain was reported in the resulting set",
+          "default": false
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-text notes about the outcome"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-genai2learn}
+      POSTGRES_USER: ${POSTGRES_USER:-genai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-genai_secret}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U genai -d genai2learn"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-genai}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-genai_secret}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - FLASK_ENV=development
+      - WORKOUT_COMMAND_URL=http://workout-command:8001
+      - EFFORT_INTELLIGENCE_URL=http://effort-intelligence:8002
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-secret-key-change-in-prod}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  workout-command:
+    build: ./services/workout-command
+    ports:
+      - "8001:8001"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://genai:genai_secret@postgres:5432/genai2learn
+      - RABBITMQ_URL=amqp://genai:genai_secret@rabbitmq:5672/
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  effort-intelligence:
+    build: ./services/effort-intelligence
+    ports:
+      - "8002:8002"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://genai:genai_secret@postgres:5432/genai2learn
+      - RABBITMQ_URL=amqp://genai:genai_secret@rabbitmq:5672/
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    build: ./services/worker
+    environment:
+      - RABBITMQ_URL=amqp://genai:genai_secret@rabbitmq:5672/
+      - EFFORT_INTELLIGENCE_URL=http://effort-intelligence:8002
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      effort-intelligence:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

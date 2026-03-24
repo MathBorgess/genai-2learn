@@ -1,0 +1,25 @@
+version: '3.8'
+
+# Development overrides - adds volume mounts for hot reload
+services:
+  api-gateway:
+    volumes:
+      - ./services/api-gateway/src:/app/src
+    environment:
+      - FLASK_DEBUG=1
+
+  workout-command:
+    volumes:
+      - ./services/workout-command/src:/app/src
+    environment:
+      - FLASK_DEBUG=1
+
+  effort-intelligence:
+    volumes:
+      - ./services/effort-intelligence/src:/app/src
+    environment:
+      - FLASK_DEBUG=1
+
+  worker:
+    volumes:
+      - ./services/worker/src:/app/src

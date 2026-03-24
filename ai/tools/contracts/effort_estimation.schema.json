@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EffortEstimation",
+  "description": "Schema for effort estimation input and output",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "required": ["set_id", "exercise_id", "load_kg", "reps"],
+      "properties": {
+        "set_id": { "type": "string", "format": "uuid" },
+        "exercise_id": { "type": "string", "minLength": 1 },
+        "load_kg": { "type": "number", "minimum": 0, "maximum": 1000 },
+        "reps": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "rir_reported": { "type": "number", "minimum": 0, "maximum": 10 },
+        "rpe_reported": { "type": "number", "minimum": 1, "maximum": 10 },
+        "bpm_avg": { "type": "number", "minimum": 30, "maximum": 250 },
+        "bpm_peak": { "type": "number", "minimum": 30, "maximum": 250 },
+        "correlation_id": { "type": "string", "format": "uuid" }
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": ["effort_score", "rir_estimate", "confidence"],
+      "properties": {
+        "effort_score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "rir_estimate": { "type": "number", "minimum": 0 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "feature_contributions": {
+          "type": "object",
+          "properties": {
+            "rir_reported": { "type": "number" },
+            "rpe_reported": { "type": "number" },
+            "rep_ratio": { "type": "number" },
+            "bpm_signal": { "type": "number" }
+          }
+        }
+      }
+    }
+  }
+}

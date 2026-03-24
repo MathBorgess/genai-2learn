@@ -1,0 +1,44 @@
+{
+  "type": "function",
+  "function": {
+    "name": "generate_recommendation",
+    "description": "Generates a load recommendation based on effort estimate. Applies safety guardrails before any recommendation.",
+    "parameters": {
+      "type": "object",
+      "required": ["effort_score", "confidence", "rir_estimate"],
+      "properties": {
+        "effort_score": {
+          "type": "number",
+          "description": "Normalized effort score (0-100)",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence in the effort estimate (0-1)",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "rir_estimate": {
+          "type": "number",
+          "description": "Estimated Reps in Reserve",
+          "minimum": 0
+        },
+        "pain_flag": {
+          "type": "boolean",
+          "description": "Whether the athlete reported pain during this set",
+          "default": false
+        },
+        "current_load_kg": {
+          "type": "number",
+          "description": "Current load in kilograms (for calculating absolute load delta)"
+        },
+        "set_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID of the exercise set"
+        }
+      }
+    }
+  }
+}

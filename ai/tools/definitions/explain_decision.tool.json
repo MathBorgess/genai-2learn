@@ -1,0 +1,41 @@
+{
+  "type": "function",
+  "function": {
+    "name": "explain_decision",
+    "description": "Generates a human-readable explanation of why a particular recommendation was made, suitable for displaying to the athlete",
+    "parameters": {
+      "type": "object",
+      "required": ["action_type", "effort_score", "confidence"],
+      "properties": {
+        "action_type": {
+          "type": "string",
+          "enum": ["INCREASE_LOAD", "DECREASE_LOAD", "MAINTAIN", "ADJUST_TECHNIQUE"],
+          "description": "The recommendation action type"
+        },
+        "effort_score": {
+          "type": "number",
+          "description": "The effort score that drove the decision"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence level of the estimate"
+        },
+        "safety_reason_codes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Safety rules that were triggered"
+        },
+        "feature_contributions": {
+          "type": "object",
+          "description": "Which signals contributed to the effort estimate"
+        },
+        "audience": {
+          "type": "string",
+          "enum": ["athlete", "coach", "developer"],
+          "description": "Target audience for the explanation",
+          "default": "athlete"
+        }
+      }
+    }
+  }
+}
